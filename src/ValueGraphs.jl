@@ -113,6 +113,17 @@ function farthest(p::Graphs.DijkstraState{Int64}, g::ValueGraph{T})::Union{Pair{
     end
 end
 
-export ValueGraph, dist, next, path, ValueEdge, vertex, farthest
+function beyond(p::Graphs.DijkstraState{Int64}, g::ValueGraph{T}, d::Int64)::Set{T} where{T}
+    ret = Set{T}()
+    for i in 1:Graphs.nv(g)
+        if p.dists[i]>d
+            push!(ret, g.values[i])
+        end
+    end
+    ret
+end
+
+
+export ValueGraph, dist, next, path, ValueEdge, vertex, farthest, beyond
 
 end # module ValueGraph

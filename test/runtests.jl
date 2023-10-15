@@ -97,4 +97,5 @@ using Test
     @test path(dpath, g, "Fuz2") == ["Bar", "Foo"]
 
     @test farthest(dpath, g) == Pair(Vector(["Fuz", "Fuz2"]), 2)
+    @test beyond(dpath, g, 1) == Set{String}(["Fuz", "Fuz2"])
 end
