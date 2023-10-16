@@ -1,8 +1,10 @@
 name = "ValueGraphs"
 uuid = "082f9bbd-a976-45ee-b191-29e9d2147e2b"
 authors = ["Michael M. Tiller <michael.tiller@juliahub.com>"]
-version = "0.1.0"
+version = "0.1.1"
 
 [deps]
+GraphViz = "f526b714-d49f-11e8-06ff-31ed36ee7ee0"
 Graphs = "86223c79-3864-5bf0-83f7-82e725a168b6"
+Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"

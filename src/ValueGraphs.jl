@@ -1,6 +1,8 @@
 module ValueGraphs
 
 import Graphs
+import GraphViz
+using Printf
 
 struct ValueEdge
     src::Int64
@@ -132,6 +134,15 @@ function beyond(p::Graphs.DijkstraState{Int64}, g::ValueGraph{T}, d::Int64)::Set
     ret
 end
 
+function Base.convert(::Type{GraphViz.Graph}, x::ValueGraph)::GraphViz.Graph
+    header = Vector{String}(["strict graph {"])
+    vlines = [@sprintf("  \"V%d\" [label=\"%s\"]", i, x.values[i]) for i in 1:nv(x)]
+    elines = [@sprintf("  \"V%d\" -- \"V%d\" [label=\"%s\"]", e.src, e.dst, e.label) for e in edges(x)]
+    footer = Vector{String}(["}"])
+
+    str = join(vcat(header, vlines, elines, footer), "\n")
+    GraphViz.Graph(str)
+end
 
 export ValueGraph, dist, next, path, ValueEdge, vertex, farthest, beyond
 
