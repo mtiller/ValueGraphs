@@ -1,7 +1,16 @@
 module ValueGraphs
 
 import Graphs
-const ValueEdge = Graphs.SimpleGraphs.SimpleEdge{Int64}
+
+struct ValueEdge
+    src::Int64
+    dst::Int64
+    label::String
+end
+
+function ValueEdge(src::Int64, dst::Int64; label::String="")
+    ValueEdge(src, dst, label)
+end
 
 mutable struct ValueGraph{T<:Any} <: Graphs.AbstractGraph{UInt64}
     values::Vector{T}
@@ -41,7 +50,7 @@ function Graphs.add_vertex!(g::ValueGraph{T}, v::T) where {T}
     push!(g.values, v)
 end
 
-function Graphs.add_edge!(g::ValueGraph{T}, src::T, dst::T, strict::Bool=false) where {T}
+function Graphs.add_edge!(g::ValueGraph{T}, src::T, dst::T; strict::Bool=false, label::String="") where {T}
     if !strict
         # Add these vertices if they don't exist
         Graphs.add_vertex!(g, src)
@@ -52,7 +61,7 @@ function Graphs.add_edge!(g::ValueGraph{T}, src::T, dst::T, strict::Bool=false) 
     if isnothing(s) || isnothing(d)
         return false
     end
-    push!(g.edges, ValueEdge(s, d))
+    push!(g.edges, ValueEdge(s, d, label))
 end
 
 function Graphs.rem_edge!(g::ValueGraph, e::ValueEdge)

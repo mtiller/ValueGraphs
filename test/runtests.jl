@@ -16,8 +16,8 @@ using Test
     @test ne(g) == 0
     @test has_edge(g, 1, 2) == false
     @test contains(g, "Foo", "Bar") == false
-    @test edgetype(g) == Graphs.SimpleGraphs.SimpleEdge{Int}
-    @test edges(g) == Vector{Graphs.SimpleGraphs.SimpleEdge{Int}}()
+    @test edgetype(g) == ValueEdge
+    @test edges(g) == Vector{ValueEdge}()
 
     @test neighbors(g, 1) == Vector{Int}()
 
@@ -37,9 +37,10 @@ using Test
     @test contains(g, "Bar")
     @test vertex(g, "Bar") == 2
 
-    add_edge!(g, "Foo", "Bar")
+    add_edge!(g, "Foo", "Bar", label="label")
 
     @test ne(g) == 1
+    @test edges(g) == Vector{ValueEdge}([ValueEdge(1, 2, "label")])
 
     # Note, vertex "Fuz" hasn't been added explicitly, but
     # it will be added by add_edge since the default value for
