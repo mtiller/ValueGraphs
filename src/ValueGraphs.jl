@@ -144,6 +144,14 @@ function Base.convert(::Type{GraphViz.Graph}, x::ValueGraph)::GraphViz.Graph
     GraphViz.Graph(str)
 end
 
+function Base.show(io::IO, t::MIME"image/svg+xml", x::ValueGraph; engine="neato")
+    ret = convert(typeof(GraphViz.Graph), x)
+    if !ret.didlayout
+        GraphViz.layout!(ret,engine=engine)
+    end
+    return Base.show(io, t, conv(x, engine=engine))
+end
+
 export ValueGraph, dist, next, path, ValueEdge, vertex, farthest, beyond
 
 end # module ValueGraph
