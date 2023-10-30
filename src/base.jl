@@ -1,3 +1,7 @@
+import GraphViz
+import Graphs
+using Printf
+
 # Base related functions
 Base.contains(g::ValueGraph{T}, v::T) where {T} = !isnothing(vertex(g, v))
 Base.contains(g::ValueGraph{T}, v::T, w::T) where {T} = !isnothing(findfirst(item -> g.values[item.src] == v && g.values[item.dst] == w, g.edges))
@@ -6,6 +10,8 @@ function Base.zero(::ValueGraph{T}) where {T}
     ValueGraph(T)
 end
 
+# TODO: Consider using Metadata.jl as a way of adding metadata like labels, fill style,
+# etc. without having to keep them in the ValueGraph datatype itself.
 function Base.convert(::Type{GraphViz.Graph}, x::ValueGraph)::GraphViz.Graph
     header = Vector{String}(["strict graph {"])
     vlines = [@sprintf("  \"V%d\" [label=\"%s\"]", i, x.values[i]) for i in 1:Graphs.nv(x)]

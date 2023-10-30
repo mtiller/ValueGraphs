@@ -1,3 +1,5 @@
+import Graphs
+
 # Graph related functions
 Graphs.is_directed(::ValueGraph) = false
 
