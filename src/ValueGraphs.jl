@@ -17,9 +17,10 @@ end
 mutable struct ValueGraph{T<:Any} <: Graphs.AbstractGraph{UInt64}
     values::Vector{T}
     edges::Vector{ValueEdge}
+    engine::String
 end
 
-ValueGraph(T::Type) = ValueGraph(Vector{T}(), Vector{ValueEdge}())
+ValueGraph(T::Type; engine::String="neato") = ValueGraph(Vector{T}(), Vector{ValueEdge}(), engine)
 
 # Graph related functions
 Graphs.is_directed(::ValueGraph) = false
@@ -136,20 +137,19 @@ end
 
 function Base.convert(::Type{GraphViz.Graph}, x::ValueGraph)::GraphViz.Graph
     header = Vector{String}(["strict graph {"])
-    vlines = [@sprintf("  \"V%d\" [label=\"%s\"]", i, x.values[i]) for i in 1:nv(x)]
-    elines = [@sprintf("  \"V%d\" -- \"V%d\" [label=\"%s\"]", e.src, e.dst, e.label) for e in edges(x)]
+    vlines = [@sprintf("  \"V%d\" [label=\"%s\"]", i, x.values[i]) for i in 1:Graphs.nv(x)]
+    elines = [@sprintf("  \"V%d\" -- \"V%d\" [label=\"%s\"]", e.src, e.dst, e.label) for e in Graphs.edges(x)]
     footer = Vector{String}(["}"])
 
     str = join(vcat(header, vlines, elines, footer), "\n")
-    GraphViz.Graph(str)
+    ret = GraphViz.Graph(str)
+    GraphViz.layout!(ret, engine=x.engine)
+    ret
 end
 
-function Base.show(io::IO, t::MIME"image/svg+xml", x::ValueGraph; engine="neato")
-    ret = convert(typeof(GraphViz.Graph), x)
-    if !ret.didlayout
-        GraphViz.layout!(ret,engine=engine)
-    end
-    return Base.show(io, t, conv(x, engine=engine))
+function Base.show(io::IO, t::MIME"image/svg+xml", x::ValueGraph)
+    ret = convert(GraphViz.Graph, x)
+    return Base.show(io, t, ret)
 end
 
 export ValueGraph, dist, next, path, ValueEdge, vertex, farthest, beyond
