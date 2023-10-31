@@ -3,7 +3,7 @@ import Graphs
 struct ValueEdge
     src::Int64
     dst::Int64
-    metadata::Dict{Symbol,String}
+    metadata::Dict{Symbol,Any}
 end
 
 function ValueEdge(src::Int64, dst::Int64; metadata...)
@@ -14,11 +14,11 @@ mutable struct ValueGraph{T<:Any} <: Graphs.AbstractGraph{UInt64}
     values::Vector{T}
     edges::Vector{ValueEdge}
     engine::String
-    vertex_metadata::Dict{Int64,Dict{Symbol,String}}
+    vertex_metadata::Dict{Int64,Dict{Symbol,Any}}
 end
 
 Base.:(==)(x::ValueEdge, y::ValueEdge) = x.src==y.src && x.dst==y.dst && x.metadata==y.metadata
 
-ValueGraph(T::Type; engine::String="neato") = ValueGraph(Vector{T}(), Vector{ValueEdge}(), engine, Dict{Int64,Dict{Symbol,String}}())
+ValueGraph(T::Type; engine::String="neato") = ValueGraph(Vector{T}(), Vector{ValueEdge}(), engine, Dict{Int64,Dict{Symbol,Any}}())
 
 export ValueGraph, ValueEdge

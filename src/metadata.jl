@@ -1,18 +1,18 @@
-function setmetadata!(g::ValueGraph{T}, v::T, kv::Pair{Symbol,String})::Bool where {T} 
+function setmetadata!(g::ValueGraph{T}, v::T, kv::Pair{Symbol,Any})::Bool where {T} 
     cur = vertex(g, v)
     if isnothing(cur)
         return false
     end
     md = get(g.vertex_metadata, cur, nothing)
     if isnothing(md) 
-        md = Dict{Symbol,String}()
+        md = Dict{Symbol,Any}()
         g.vertex_metadata[cur] = md
     end
     push!(md, kv)
     true
 end
 
-function setmetadata!(g::ValueGraph{T}, v::Int64, w::Int64; kv::Pair{Symbol,String})::Bool where {T}
+function setmetadata!(g::ValueGraph{T}, v::Int64, w::Int64; kv::Pair{Symbol,Any})::Bool where {T}
     idx = findfirst(item -> item.src == v && item.dst == w, g.edges)
     if isnothing(idx)
         return false
@@ -28,22 +28,22 @@ export setmetadata!
 The result of this call is **read only**.  Any changes to the dictionary will not 
 be reflected back on the vertex.  For that, use the setmetadata! method.
 """
-function getmetadata(g::ValueGraph{T}, v::T)::Dict{Symbol,String} where {T}
+function getmetadata(g::ValueGraph{T}, v::T)::Dict{Symbol,Any} where {T}
     cur = vertex(g, v)
     if isnothing(cur)
-        return Dict{Symbol,String}()
+        return Dict{Symbol,Any}()
     end
-    get(g.vertex_metadata, cur, Dict{Symbol,String}())
+    get(g.vertex_metadata, cur, Dict{Symbol,Any}())
 end
 
 """
 The result of this call is **read only**.  Any changes to the dictionary will not 
 be reflected back on the edge.  For that, use the setmetadata! method.
 """
-function getmetadata(g::ValueGraph{T}, v::Int64, w::Int64)::Dict{Symbol,String} where {T}
+function getmetadata(g::ValueGraph{T}, v::Int64, w::Int64)::Dict{Symbol,Any} where {T}
     idx = findfirst(item -> item.src == v && item.dst == w, g.edges)
     if isnothing(idx)
-        return Dict{Symbol,String}()
+        return Dict{Symbol,Any}()
     end
     edge = g.edges[idx]
     edge.metadata

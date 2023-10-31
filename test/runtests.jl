@@ -22,8 +22,8 @@ using GraphViz
 
     @test neighbors(g, 1) == Vector{Int}()
 
-    add_vertex!(g, "Foo", gv_label="Label")
-    @test getmetadata(g, "Foo")==Dict{Symbol,String}(:gv_label=>"Label")
+    add_vertex!(g, "Foo", gv_label="Label", gv_width=5)
+    @test getmetadata(g, "Foo")==Dict{Symbol,Any}(:gv_label=>"Label", :gv_width=>5)
 
     @test nv(g) == 1
     @test ne(g) == 0
