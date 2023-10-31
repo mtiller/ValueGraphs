@@ -28,18 +28,16 @@ function Graphs.add_vertex!(g::ValueGraph{T}, v::T) where {T}
     push!(g.values, v)
 end
 
-function Graphs.add_edge!(g::ValueGraph{T}, src::T, dst::T; strict::Bool=false, label::String="") where {T}
-    if !strict
-        # Add these vertices if they don't exist
-        Graphs.add_vertex!(g, src)
-        Graphs.add_vertex!(g, dst)
-    end
+function Graphs.add_edge!(g::ValueGraph{T}, src::T, dst::T; metadata...) where {T}
+    # Add these vertices if they don't exist
+    Graphs.add_vertex!(g, src)
+    Graphs.add_vertex!(g, dst)
     s = vertex(g, src)
     d = vertex(g, dst)
     if isnothing(s) || isnothing(d)
         return false
     end
-    push!(g.edges, ValueEdge(s, d, label))
+    push!(g.edges, ValueEdge(s, d, Dict(metadata)))
 end
 
 function Graphs.rem_edge!(g::ValueGraph, e::ValueEdge)

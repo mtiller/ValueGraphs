@@ -1,4 +1,5 @@
 using Test
+using GraphViz 
 
 @testset "Value Graph Tests" begin
     using Graphs
@@ -40,7 +41,7 @@ using Test
     add_edge!(g, "Foo", "Bar", label="label")
 
     @test ne(g) == 1
-    @test edges(g) == Vector{ValueEdge}([ValueEdge(1, 2, "label")])
+    @test edges(g) == Vector{ValueEdge}([ValueEdge(1, 2, Dict(:label => "label"))])
 
     # Note, vertex "Fuz" hasn't been added explicitly, but
     # it will be added by add_edge since the default value for
@@ -99,4 +100,6 @@ using Test
 
     @test farthest(dpath, g) == Pair(Vector(["Fuz", "Fuz2"]), 2)
     @test beyond(dpath, g, 1) == Set{String}(["Fuz", "Fuz2"])
+
+    gv = convert(GraphViz.Graph, g)
 end
