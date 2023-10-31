@@ -22,7 +22,8 @@ using GraphViz
 
     @test neighbors(g, 1) == Vector{Int}()
 
-    add_vertex!(g, "Foo")
+    add_vertex!(g, "Foo", gv_label="Label")
+    @test getmetadata(g, "Foo")==Dict{Symbol,String}(:gv_label=>"Label")
 
     @test nv(g) == 1
     @test ne(g) == 0
@@ -38,10 +39,10 @@ using GraphViz
     @test contains(g, "Bar")
     @test vertex(g, "Bar") == 2
 
-    add_edge!(g, "Foo", "Bar", label="label")
+    add_edge!(g, "Foo", "Bar", gv_label="Label")
 
     @test ne(g) == 1
-    @test edges(g) == Vector{ValueEdge}([ValueEdge(1, 2, Dict(:label => "label"))])
+    @test edges(g) == Vector{ValueEdge}([ValueEdge(1, 2, Dict(:gv_label => "Label"))])
 
     # Note, vertex "Fuz" hasn't been added explicitly, but
     # it will be added by add_edge since the default value for

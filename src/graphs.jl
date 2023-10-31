@@ -20,12 +20,16 @@ Graphs.outneighbors(g::ValueGraph, other::Int64) = [(g.edges[i].src == other ? g
 Graphs.inneighbors(g::ValueGraph, other::Int64) = [(g.edges[i].src == other ? g.edges[i].dst : g.edges[i].src) for i in 1:Graphs.ne(g) if g.edges[i].src == other || g.edges[i].dst == other]
 
 # Mutability functions
-function Graphs.add_vertex!(g::ValueGraph{T}, v::T) where {T}
+function Graphs.add_vertex!(g::ValueGraph{T}, v::T; metadata...)::Bool where {T}
     cur = vertex(g, v)
     if !isnothing(cur)
         return false
     end
     push!(g.values, v)
+    cur = vertex(g, v)
+    md = Dict(metadata)
+    g.vertex_metadata[cur] = md
+    true
 end
 
 function Graphs.add_edge!(g::ValueGraph{T}, src::T, dst::T; metadata...) where {T}
