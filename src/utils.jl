@@ -1,4 +1,9 @@
 # Utility methods
+
+"""
+This function extracts the vertex index for the provided value (or `nothing` if
+the value is not associated with a vertex).
+"""
 vertex(g::ValueGraph{T}, v::T) where {T} = findfirst(item -> item == v, g.values)
 
 function dist(p::Graphs.DijkstraState{Int64}, g::ValueGraph{T}, v::T) where {T}

@@ -32,7 +32,7 @@ function Base.convert(::Type{GraphViz.Graph}, x::ValueGraph)::GraphViz.Graph
     footer = Vector{String}(["}"])
 
     str = join(vcat(header, vlines, elines, footer), "\n")
-    println(str)
+    # println(str)
     ret = GraphViz.Graph(str)
     GraphViz.layout!(ret, engine=x.engine)
     ret

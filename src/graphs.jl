@@ -1,6 +1,10 @@
 import Graphs
 
 # Graph related functions
+"""
+Indicates whether this instance of `ValueGraph` represents
+a directed or undirect graph.
+"""
 Graphs.is_directed(::ValueGraph) = false
 
 # Vertex related functions
