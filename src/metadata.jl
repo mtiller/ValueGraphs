@@ -30,10 +30,11 @@ be reflected back on the vertex.  For that, use the setmetadata! method.
 """
 function getmetadata(g::ValueGraph{T}, v::T)::Dict{Symbol,Any} where {T}
     cur = vertex(g, v)
-    if isnothing(cur)
-        return Dict{Symbol,Any}()
+    ret = isnothing(cur) ? Dict{Symbol,Any}() : get(g.vertex_metadata, cur, Dict{Symbol,Any}())
+    if !(:gv_label in keys(ret))
+        push!(ret, :gv_label=>repr(v))
     end
-    get(g.vertex_metadata, cur, Dict{Symbol,Any}())
+    ret
 end
 
 """
