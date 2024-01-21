@@ -1,5 +1,5 @@
 using Test
-using GraphViz 
+using GraphViz
 
 @testset "Value Graph Tests" begin
     using Graphs
@@ -21,9 +21,11 @@ using GraphViz
     @test edges(g) == Vector{ValueEdge}()
 
     @test neighbors(g, 1) == Vector{Int}()
+    @test outneighbors(g, 1) == Vector{Int}()
+    @test inneighbors(g, 1) == Vector{Int}()
 
     add_vertex!(g, "Foo", gv_label="Label", gv_width=5)
-    @test getmetadata(g, "Foo")==Dict{Symbol,Any}(:gv_label=>"Label", :gv_width=>5)
+    @test getmetadata(g, "Foo") == Dict{Symbol,Any}(:gv_label => "Label", :gv_width => 5)
 
     @test nv(g) == 1
     @test ne(g) == 0

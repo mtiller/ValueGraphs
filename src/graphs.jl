@@ -16,6 +16,7 @@ Graphs.has_vertex(g::ValueGraph, v::Int64) = v <= Graphs.nv(g) && v > 0
 Graphs.ne(g::ValueGraph) = length(g.edges)
 Graphs.has_edge(g::ValueGraph, v::Int64, w::Int64) = !isnothing(findfirst(item -> item.src == v && item.dst == w, g.edges))
 Graphs.edgetype(::ValueGraph) = ValueEdge
+Graphs.eltype(g::ValueGraph) = Int64
 Graphs.edges(g::ValueGraph) = g.edges
 
 # Vertex and Edge related functions
