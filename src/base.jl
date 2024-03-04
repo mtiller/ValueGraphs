@@ -14,19 +14,19 @@ end
 Any metadata that starts with `:gv_` is treated as a GraphViz attribute and 
 collected here to be included after nodes and edges.
 """
-function gv_attrs(metadata::Dict{Symbol, Any})::String
-    matching = filter(metadata) do (k,v)
+function gv_attrs(metadata::Dict{Symbol,Any})::String
+    matching = filter(metadata) do (k, v)
         startswith(repr(k), ":gv_")
     end
-    if length(matching)==0
+    if length(matching) == 0
         return ""
     end
-    s = ["$(chop(repr(k),head=4,tail=0))=$(repr(v))" for (k,v) in matching]
+    s = ["$(chop(repr(k),head=4,tail=0))=$(repr(v))" for (k, v) in matching]
     "[$(join(s, ", "))]"
 end
 
 function Base.convert(::Type{GraphViz.Graph}, x::ValueGraph)::GraphViz.Graph
-    header = Vector{String}(["strict graph {"])
+    header = Vector{String}(["strict graph {", "  state=2"])
     vlines = [@sprintf("  \"V%d\" %s", i, gv_attrs(getmetadata(x, x.values[i]))) for i in 1:Graphs.nv(x)]
     elines = [@sprintf("  \"V%d\" -- \"V%d\" %s", e.src, e.dst, gv_attrs(e.metadata)) for e in Graphs.edges(x)]
     footer = Vector{String}(["}"])
